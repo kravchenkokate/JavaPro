@@ -12,37 +12,32 @@ public class Saver {
         TextContainer container = new TextContainer();
 
         Class<?> cls = container.getClass();
-        if(cls.isAnnotationPresent(SaveTo.class)) {
-            SaveTo saveTo = cls.getAnnotation(SaveTo.class);
-            String path = saveTo.path();
+        SaveTo saveTo = cls.getAnnotation(SaveTo.class);
+        String path = saveTo.path();
 
-            String text = "";
+        String text = "";
 
-            Field[] fields = cls.getDeclaredFields();
-            for (Field field : fields) {
-                if (field.getName().equals("text")) {
-                    field.setAccessible(true);
-                    try {
-                        text = field.get(container).toString();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            Method[] methods = cls.getDeclaredMethods();
-            for (Method method : methods) {
-                if (method.isAnnotationPresent(Save.class)) {
-                    try {
-                        method.invoke(container, path, text);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+        Field[] fields = cls.getDeclaredFields();
+        for (Field field : fields) {
+           if (field.getName().equals("text")) {
+               field.setAccessible(true);
+               try {
+                   text = field.get(container).toString();
+               } catch (IllegalAccessException e) {
+                   e.printStackTrace();
+               }
+           }
         }
-        else {
-            System.out.println("Ошибка! В классе " + cls.getName() + " нет аннотации SaveTo.");
+
+        Method[] methods = cls.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.isAnnotationPresent(Save.class)) {
+                try {
+                    method.invoke(container, path, text);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
