@@ -16,9 +16,9 @@ public class Main {
         Method[] methods = cls.getDeclaredMethods();
         for(Method method: methods) {
             if(method.isAnnotationPresent(Sum.class)) {
-                Sum annotation = (Sum)method.getAnnotation(Sum.class);
+                Sum sum = method.getAnnotation(Sum.class);
                 try {
-                    method.invoke(null, annotation.a(), annotation.b());
+                    method.invoke(null, sum.a(), sum.b());
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }

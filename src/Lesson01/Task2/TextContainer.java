@@ -1,15 +1,22 @@
 package Lesson01.Task2;
 
-@SaveTo(path="c:\\file.txt")
+import java.io.FileWriter;
+import java.io.IOException;
+
+
+@SaveTo(path="c:\\song.txt")
 public class TextContainer {
 
-    private String text = "";
+    private static String text = "Row, row, row your boat...";
 
-    @Saver
-    public void save() {
+    @Save
+    public static void save(String path, String text) {
 
+        try(FileWriter fw = new FileWriter(path)) {
+            fw.write(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
 }
 
